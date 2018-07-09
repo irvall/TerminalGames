@@ -34,19 +34,23 @@ void print_board()
         if ((i + 1) % m == 0)
             printf("| %d\n", ++k);
     }
-    
-    for(int i = 0; i < m; i++) {
-	if(i > 8)
-		printf(" %d", (i+1) / 10);
-	else
-		printf(" %d", i+1);
+
+    for (int i = 0; i < m; i++)
+    {
+        if (i > 8)
+            printf(" %d", (i + 1) / 10);
+        else
+            printf(" %d", i + 1);
     }
     printf("\n");
     k = 10;
-    while(k-- > 0) printf("  ");
-    for(int i = 9; i < m; i++) {
-	
-    }
+    while (--k > 0)
+        printf("  ");
+
+    for (int i = 9; i < m; i++)
+        printf(" %d", (i + 1) % 10);
+
+    printf("\n");
 }
 
 int search_winner()
@@ -97,7 +101,7 @@ int search_winner()
         i = temp;
     }
 
-    for (int i = 0; i < total - goal; i++)
+    for (int i = 0; i <= total - goal; i++)
     {
         c = 0;
         int j = i + 1;
@@ -153,18 +157,18 @@ void make_random_move()
 
 void print_think_message()
 {
-	printf("\n");
-	int n = 8;
-	char *messages[] = {"great move, let me think", 
-		"holy moly, need to think",
-	        "I'm winning now",
-		"you just wasted a move",
-		"thinking",
-		"hasta la vista, baby",
-		"GG",
-		"surrender now"};
-	int r = rand() % n;
-	printf("...%s...\n", messages[r]);
+    printf("\n");
+    int n = 8;
+    char *messages[] = {"great move, let me think",
+                        "holy moly, need to think",
+                        "I'm winning now",
+                        "you just wasted a move",
+                        "thinking",
+                        "hasta la vista, baby",
+                        "GG",
+                        "surrender now"};
+    int r = rand() % n;
+    printf("...%s...\n", messages[r]);
 }
 
 int main()
