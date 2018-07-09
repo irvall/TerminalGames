@@ -266,7 +266,7 @@ int main()
         }
         if (nmoves == total)
         {
-            printf("Draw!\n");
+            print_draw();
             break;
         }
     }
