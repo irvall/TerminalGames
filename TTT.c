@@ -27,13 +27,26 @@ void print_debug()
 void print_board()
 {
     printf("\n");
+    int k = 0;
     for (int i = 0; i < total; i++)
     {
         printf("|%c", *(board + i));
         if ((i + 1) % m == 0)
-            printf("|\n");
+            printf("| %d\n", ++k);
+    }
+    
+    for(int i = 0; i < m; i++) {
+	if(i > 8)
+		printf(" %d", (i+1) / 10);
+	else
+		printf(" %d", i+1);
     }
     printf("\n");
+    k = 10;
+    while(k-- > 0) printf("  ");
+    for(int i = 9; i < m; i++) {
+	
+    }
 }
 
 int search_winner()
@@ -138,6 +151,22 @@ void make_random_move()
         make_random_move();
 }
 
+void print_think_message()
+{
+	printf("\n");
+	int n = 8;
+	char *messages[] = {"great move, let me think", 
+		"holy moly, need to think",
+	        "I'm winning now",
+		"you just wasted a move",
+		"thinking",
+		"hasta la vista, baby",
+		"GG",
+		"surrender now"};
+	int r = rand() % n;
+	printf("...%s...\n", messages[r]);
+}
+
 int main()
 {
     xo = 'O';
@@ -175,7 +204,7 @@ int main()
         }
         if (gamemode == 1)
         {
-            printf("\n...thinking...\n");
+            print_think_message();
             sleep(1);
             make_random_move();
             print_board();
