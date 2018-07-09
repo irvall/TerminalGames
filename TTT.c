@@ -43,6 +43,7 @@ int search_winner()
     {
         c = 0;
         int j = i + m + 1;
+        int temp = i;
         while (*(board + i) == *(board + j) && *(board + i) != empty)
         {
             i = j;
@@ -50,6 +51,7 @@ int search_winner()
             if (++c == goal - 1)
                 return 1;
         }
+        i = temp;
     }
 
     for (int i = m - 1; i < total - n; i++)
