@@ -7,6 +7,7 @@ int m;
 int n;
 int goal;
 int gameover;
+int nmoves;
 char xo;
 char *board;
 
@@ -20,24 +21,78 @@ void print_board()
     }
 }
 
-//x - - - x - - - x
-
 void search_winner()
 {
-    for (int i = 0; i < goal; i += (n + 1))
+    int c = 0;
+    //upper left to lower right diagonal
+    for (int i = 0; i < total; i += (n + 1))
     {
         int j = i + n + 1;
-        if (*(board + i) == *(board + j))
+        if (*(board + i) == *(board + j) && *(board + i) != empty)
         {
-            if (i == total - 1)
+            if (++c == goal - 1)
             {
                 gameover = 1;
                 break;
             }
         }
         else
-            break;
+            c = 0;
     }
+
+    c = 0;
+    //lower left to upper right diagonal
+    for (int i = n - 1; i < total; i += (n / 2) + 1)
+    {
+        int j = i + (n / 2) + 1;
+        if (*(board + i) == *(board + j) && *(board + i) != empty)
+        {
+            if (++c == goal - 1)
+            {
+                gameover = 1;
+                break;
+            }
+        }
+        else
+            c = 0;
+    }
+
+    for (int i = 0; i <= m; i++)
+    {
+        c = 0;
+        int j = i + n;
+        int temp = i;
+        while (*(board + i) == *(board + j) && *(board + i) != empty)
+        {
+            i = j;
+            j = i + m;
+            if (++c == goal - 1)
+            {
+                gameover = 1;
+                break;
+            }
+        }
+        i = temp;
+    }
+
+    for (int i = 0; i < total; i += m)
+    {
+        c = 0;
+        int j = i + 1;
+        int temp = i;
+        while (*(board + i) == *(board + j) && *(board + i) != empty)
+        {
+            i = j;
+            j = i + 1;
+            if (++c == goal - 1)
+            {
+                gameover = 1;
+                break;
+            }
+        }
+        i = temp;
+    }
+
 }
 
 void switch_turn()
@@ -67,6 +122,7 @@ int place(int x, int y)
             *p = xo;
         }
     }
+    nmoves++;
     switch_turn();
     return 1;
 }
@@ -75,6 +131,7 @@ int main()
 {
     xo = 'O';
     gameover = 0;
+    nmoves = 0;
     printf("Enter dimensions (m,n): ");
     scanf("%d,%d", &m, &n);
     printf("Enter goal: ");
@@ -88,18 +145,16 @@ int main()
     int y;
     while (!gameover)
     {
-        print_board();
         printf("Enter move (x,y): ");
-
         if (scanf("%d,%d", &x, &y))
         {
             place(--x, --y);
+            print_board();
             search_winner();
         }
-        else printf("Move should be formatted \'x,y\'\n");
+        else return EXIT_FAILURE;
     }
-
-    printf("Game over!\n");
-
+    switch_turn();
+    printf("Game over!\n'%c' wins!\n", xo);
     return EXIT_SUCCESS;
 }
