@@ -51,6 +51,7 @@ void print_board()
         printf(" %d", (i + 1) % 10);
 
     printf("\n");
+    print_debug();
 }
 
 int search_winner()
@@ -77,15 +78,13 @@ int search_winner()
         c = 0;
         int j = i + (m - 1);
         int temp = i;
-        while (i < total - n && j < total && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty)
+        while (i < total - n && j < total - n && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty)
         {
-            printf("i: %d\n", i);
-            printf("j: %d\n", j);
             i = j;
             j = i + (m - 1);
-            if (++c == goal - 1) {
+            if (++c == goal)
                 return 1;
-            }
+            
         }
         i = temp;
     }
@@ -179,8 +178,22 @@ void print_think_message()
 void print_illegal()
 {
     printf("%s\n  %s\n%s\n\n", "_____               _______  ______ _______             _______  _____  _    _ _______",
-        "|   |      |      |______ |  ____ |_____| |           |  |  | |     |  \\  /  |______",
-        "__|__ |_____ |_____ |______ |_____| |     | |_____      |  |  | |_____|   \\/   |______");
+    "|   |      |      |______ |  ____ |_____| |           |  |  | |     |  \\  /  |______",
+    "__|__ |_____ |_____ |______ |_____| |     | |_____      |  |  | |_____|   \\/   |______");
+}
+
+void print_gameover()
+{
+    printf("%s\n%s\n%s\n\n", " ______ _______ _______ _______       _____  _    _ _______  ______",
+    "|  ____ |_____| |  |  | |______      |     |  \\  /  |______ |_____/",
+    "|_____| |     | |  |  | |______      |_____|   \\/   |______ |    \\_");
+}
+
+void print_youwon()
+{
+   printf("%s\n  %s\n   %s\n\n", "__   __  _____  _     _      _  _  _ _____ __   _",
+   "\\_/   |     | |     |      |  |  |   |   | \\  |",
+   "|    |_____| |_____|      |__|__| __|__ |  \\_|");       
 }
 
 int main()
@@ -216,6 +229,7 @@ int main()
         if (search_winner())
         {
             switch_turn();
+            print_youwon();
             break;
         }
         if (gamemode == 1)
@@ -227,6 +241,7 @@ int main()
             if (search_winner())
             {
                 switch_turn();
+                print_gameover();
                 break;
             }
         }
@@ -236,8 +251,6 @@ int main()
             return EXIT_SUCCESS;
         }
     }
-    printf("Game over!\n'%c' wins!\n", xo);
     free(board);
-    printf("\n");
     return EXIT_SUCCESS;
 }
