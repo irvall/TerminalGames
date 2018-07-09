@@ -40,7 +40,6 @@ void print_debug()
 int search_winner()
 {
     int c = 0;
-    //upper left to lower right diagonal
     for (int i = 0; i < total; i += (n + 1))
     {
         int j = i + n + 1;
@@ -54,7 +53,6 @@ int search_winner()
     }
 
     c = 0;
-    //lower left to upper right diagonal
     for (int i = n - 1; i < total - m; i += (n / 2) + 1)
     {
         int j = i + (n / 2) + 1;
