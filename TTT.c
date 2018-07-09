@@ -61,12 +61,13 @@ int search_winner()
         c = 0;
         int j = i + m + 1;
         int temp = i;
-        while (*(board + i) == *(board + j) && *(board + i) != empty)
+        while (i < total && j < total && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty)
         {
             i = j;
             j = i + m + 1;
-            if (++c == goal - 1)
+            if (++c == goal - 1) {
                 return 1;
+            }
         }
         i = temp;
     }
@@ -76,12 +77,15 @@ int search_winner()
         c = 0;
         int j = i + (m - 1);
         int temp = i;
-        while (*(board + i) == *(board + j) && *(board + i) != empty)
+        while (i < total - n && j < total && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty)
         {
+            printf("i: %d\n", i);
+            printf("j: %d\n", j);
             i = j;
             j = i + (m - 1);
-            if (++c == goal - 1)
+            if (++c == goal - 1) {
                 return 1;
+            }
         }
         i = temp;
     }
@@ -91,12 +95,13 @@ int search_winner()
         c = 0;
         int j = i + m;
         int temp = i;
-        while (*(board + i) == *(board + j) && *(board + i) != empty)
+        while (i < total && j < total && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty)
         {
             i = j;
             j = i + m;
-            if (++c == goal - 1)
+            if (++c == goal - 1) {
                 return 1;
+            }
         }
         i = temp;
     }
@@ -106,12 +111,13 @@ int search_winner()
         c = 0;
         int j = i + 1;
         int temp = i;
-        while (*(board + i) == *(board + j) && *(board + i) != empty && i % m == (j % m) - 1)
+        while (i < total && j < total && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty)
         {
             i = j;
             j = i + 1;
-            if (++c == goal - 1)
+            if (++c == goal - 1) {
                 return 1;
+            }
         }
         i = temp;
     }
@@ -158,17 +164,23 @@ void make_random_move()
 void print_think_message()
 {
     printf("\n");
-    int n = 8;
     char *messages[] = {"great move, let me think",
-                        "holy moly, need to think",
-                        "I'm winning now",
-                        "you just wasted a move",
-                        "thinking",
-                        "hasta la vista, baby",
-                        "GG",
-                        "surrender now"};
-    int r = rand() % n;
+                    "holy moly, need to think",
+                    "I'm winning now",
+                    "you just wasted a move",
+                    "thinking",
+                    "hasta la vista, baby",
+                    "GG",
+                    "surrender now"};
+    int r = rand() % 8;
     printf("...%s...\n", messages[r]);
+}
+
+void print_illegal()
+{
+    printf("%s\n  %s\n%s\n\n", "_____               _______  ______ _______             _______  _____  _    _ _______",
+        "|   |      |      |______ |  ____ |_____| |           |  |  | |     |  \\  /  |______",
+        "__|__ |_____ |_____ |______ |_____| |     | |_____      |  |  | |_____|   \\/   |______");
 }
 
 int main()
@@ -196,7 +208,7 @@ int main()
         {
             if (!place(--x, --y))
             {
-                printf("Illegal move!\n");
+                print_illegal();
                 continue;
             }
             print_board();
@@ -218,7 +230,7 @@ int main()
                 break;
             }
         }
-        if (nmoves == total - 1)
+        if (nmoves == total)
         {
             printf("Draw!\n");
             return EXIT_SUCCESS;
@@ -226,5 +238,6 @@ int main()
     }
     printf("Game over!\n'%c' wins!\n", xo);
     free(board);
+    printf("\n");
     return EXIT_SUCCESS;
 }
