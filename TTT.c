@@ -13,18 +13,6 @@ int nmoves;
 char xo;
 char *board;
 
-void print_board()
-{
-    printf("\n");
-    for (int i = 0; i < total; i++)
-    {
-        printf("|%c", *(board + i));
-        if ((i + 1) % n == 0)
-            printf("|\n");
-    }
-    printf("\n");
-}
-
 void print_debug()
 {
     for (int i = 0; i < total; i++)
@@ -32,48 +20,62 @@ void print_debug()
         if (*(board + i) == empty)
             printf("- ");
         else
-            printf("(%i %c) ", i, *(board + i));
+            printf("(%c %d)", *(board + i), i);
+    }
+    printf("\n");
+}
+void print_board()
+{
+    printf("\n");
+    for (int i = 0; i < total; i++)
+    {
+        printf("|%c", *(board + i));
+        if ((i + 1) % m == 0)
+            printf("|\n");
     }
     printf("\n");
 }
 
 int search_winner()
 {
-    int c = 0;
-    for (int i = 0; i < total; i += (n + 1))
+    int c;
+    for (int i = 0; i < total; i++)
     {
-        int j = i + n + 1;
-        if (*(board + i) == *(board + j) && *(board + i) != empty)
+        c = 0;
+        int j = i + m + 1;
+        while (*(board + i) == *(board + j) && *(board + i) != empty)
         {
+            i = j;
+            j = i + m + 1;
             if (++c == goal - 1)
                 return 1;
         }
-        else
-            c = 0;
     }
 
-    c = 0;
-    for (int i = n - 1; i < total - m; i += (n / 2) + 1)
+    for (int i = m - 1; i < total - n; i++)
     {
-        int j = i + (n / 2) + 1;
-        if (*(board + i) == *(board + j) && *(board + i) != empty)
+        c = 0;
+        int j = i + (m - 1);
+        int temp = i;
+        while (*(board + i) == *(board + j) && *(board + i) != empty)
         {
+            i = j;
+            j = i + (m - 1);
             if (++c == goal - 1)
                 return 1;
         }
-        else
-            c = 0;
+        i = temp;
     }
 
     for (int i = 0; i < total; i++)
     {
         c = 0;
-        int j = i + n;
+        int j = i + m;
         int temp = i;
         while (*(board + i) == *(board + j) && *(board + i) != empty)
         {
             i = j;
-            j = i + n;
+            j = i + m;
             if (++c == goal - 1)
                 return 1;
         }
@@ -85,7 +87,7 @@ int search_winner()
         c = 0;
         int j = i + 1;
         int temp = i;
-        while (*(board + i) == *(board + j) && *(board + i) != empty && i % m == j % m - 1)
+        while (*(board + i) == *(board + j) && *(board + i) != empty && i % m == (j % m) - 1)
         {
             i = j;
             j = i + 1;
@@ -104,7 +106,7 @@ void switch_turn()
 
 int place(int x, int y)
 {
-    int i = y * n + x;
+    int i = y * m + x;
     if (i >= total)
     {
         return 0;
@@ -119,11 +121,11 @@ int place(int x, int y)
         else
         {
             *p = xo;
-            nmoves++;
-            switch_turn();
-            return 1;
         }
     }
+    nmoves++;
+    switch_turn();
+    return 1;
 }
 
 void make_random_move()
@@ -188,5 +190,6 @@ int main()
         }
     }
     printf("Game over!\n'%c' wins!\n", xo);
+    free(board);
     return EXIT_SUCCESS;
 }
