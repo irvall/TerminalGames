@@ -110,7 +110,7 @@ int search_winner()
         c = 0;
         int j = i + 1;
         int temp = i;
-        while (i < total && j < total && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty)
+        while (i < total && j < total && i >= 0 && j >= 0 && *(board + i) == *(board + j) && *(board + i) != empty && i % n == (j % n) - 1)
         {
             i = j;
             j = i + 1;
