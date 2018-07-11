@@ -203,7 +203,7 @@ void print_gameover()
 void print_youwon()
 {
     printf("%s\n  %s\n   %s\n\n",
-           " __   __  _____  _     _      _  _  _ _____ __   _",
+           "__   __  _____  _     _      _  _  _ _____ __   _",
            "\\_/   |     | |     |      |  |  |   |   | \\  |",
            "|    |_____| |_____|      |__|__| __|__ |  \\_|");
 }
@@ -237,8 +237,9 @@ int main()
     int y;
     while (2 + 2 == 4)
     {
+	print_board();
         printf("Enter move (x,y): ");
-        if (scanf("%d,%d", &x, &y))
+	if (scanf("%d,%d", &x, &y))
         {
             if (!place(--x, --y))
             {
